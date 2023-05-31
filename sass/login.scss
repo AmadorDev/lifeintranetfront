@@ -1,0 +1,177 @@
+// body {
+//   background-color: #e9e9e9;
+//   font-family: "Montserrat", sans-serif;
+//   font-size: 16px;
+//   line-height: 1.25;
+//   letter-spacing: 1px;
+// }
+
+* {
+  box-sizing: border-box;
+  transition: 0.25s all ease;
+}
+.logindiv {
+  border-radius: 30px 0px 30px 0px;
+  background: #ffffff;
+  -webkit-box-shadow: 1px 1px 8px 2px #a8a8a8;
+  box-shadow: 1px 1px 8px 2px #a8a8a8;
+}
+.contenedor {
+  height: 100vh;
+  background: red;
+}
+
+.login__submit {
+  background: $life_verd;
+  border-radius: 15px;
+  color: #ffffff;
+  width: 100% !important;
+  padding: 5px;
+}
+
+.loginPrin {
+  z-index: 0;
+  width: 100%;
+  height: 100vh;
+  // background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/283591/login-background.jpg);
+  // box-shadow: 0 50px 70px -20px rgba(0, 0, 0, 0.85);
+}
+
+// --------------------------------------
+// --------------------------------------
+// --------------------------------------
+// --------------------------------------
+
+.group {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+// ------ input personalizadooooo
+.input {
+  border-radius: 0 !important;
+  font-size: 18px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  border: none;
+  border-bottom: 1px solid #757575 !important;
+}
+.input:focus {
+  outline: none;
+}
+
+/* LABEL ======================================= */
+.label {
+  color: #999;
+  font-size: 17px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+/* active state */
+.input:focus ~ .label,
+.input:valid ~ .label {
+  top: -20px;
+  font-size: 14px;
+  color: #90939e;
+}
+
+/* BOTTOM BARS ================================= */
+.bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.bar:before,
+.bar:after {
+  content: "";
+  height: 2px;
+  width: 0;
+  bottom: 0px;
+  position: absolute;
+  background: $life_verd;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+.bar:before {
+  left: 50%;
+}
+.bar:after {
+  right: 50%;
+}
+
+/* active state */
+.input:focus ~ .bar:before,
+.input:focus ~ .bar:after {
+  width: 50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+  position: absolute;
+  height: 60%;
+  width: 100px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* active state */
+.input:focus ~ .highlight {
+  -webkit-animation: inputHighlighter 0.3s ease;
+  -moz-animation: inputHighlighter 0.3s ease;
+  animation: inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+  from {
+    background: $life_verd;
+  }
+  to {
+    width: 0;
+    background: transparent;
+  }
+}
+@-moz-keyframes inputHighlighter {
+  from {
+    background: $life_verd;
+  }
+  to {
+    width: 0;
+    background: transparent;
+  }
+}
+@keyframes inputHighlighter {
+  from {
+    background: $life_verd;
+  }
+  to {
+    width: 0;
+    background: transparent;
+  }
+}
+
+// ------ input personalizadooooo
+// wave
+.bg-img {
+  background-image: url("/imgs/wave.svg");
+  // background-size: auto;
+  background-repeat: no-repeat;
+}
+
+.borderselect {
+  border: none !important;
+  outline: 0px !important;
+}
+select option {
+  border-color: $life_verd !important;
+}
