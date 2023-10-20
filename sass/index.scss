@@ -28,18 +28,18 @@ $life_verd: #00aa9b;
 
 
 
-$c-pri:#102A47;
-$c-pri-h:#07111d;
+$c-pri: #102A47;
+$c-pri-h: #07111d;
 
-$c-secon:#92285C;
-$c-secon-h:#7c244f;
+$c-secon: #92285C;
+$c-secon-h: #7c244f;
 
-$c-f:#28A09C;
-$c-f-claro:#EDFFFE;
+$c-f: #28A09C;
+$c-f-claro: #EDFFFE;
 $c-f-m :#93CFCD;
-$white:#ffffff;
+$white: #ffffff;
 
-$t-title:#707070;
+$t-title: #707070;
 
 @import "./login.scss";
 @import "./loader.scss";
@@ -499,4 +499,31 @@ hr {
 .my-account {
   background: #fff;
   padding: 10px;
+}
+
+.avatar_profile {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.color-href a {
+  color: #1AB5B3;
+  font-weight: 500;
+}
+
+.notification-content {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  line-height: 15px;
+}
+.notification-content a{
+  color: #1AB5B3 !important;
+  font-weight: 500;
+}
+.notification-image{
+  height: 50px;
+    width: 50px;
+    border-radius: 50%;
 }

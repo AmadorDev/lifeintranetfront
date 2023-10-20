@@ -4,18 +4,40 @@ import { io } from "socket.io-client";
 import { apiLogout } from "../../../api/userApi";
 import useAuth from "../../../hooks/useAuth";
 import ls from "local-storage";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { BASE_HOST } from "../../../utils/constants";
+import { notificationsApi } from "../../../api/commentApi";
+import { FormatTimes } from "../../../utils/timenow";
 
 export function NotificationsH() {
+  const [notifications, setNotifications] = useState([]);
+
+  const iconShow = useRef(null);
+  async function getNotifications() {
+    if (iconShow.current.classList.contains("uk-open")) {
+      const resp = await notificationsApi(null);
+      if (resp.data) {
+        setNotifications(resp.data);
+      }
+    }
+  }
+
+  function ClearText(txt) {
+    const regex = /"([^"]*)"/g;
+    const result = txt.replace(regex, "$1");
+    return result;
+  }
+
   return (
     <>
       <a
+        ref={iconShow}
         href="#"
         className="is_icon"
         uk-tooltip="title: Notifications"
         title=""
         aria-expanded="false"
+        onClick={getNotifications}
       >
         <FiHeart className="text-red-500" />
         {/* <span>3</span> */}
@@ -72,7 +94,7 @@ export function NotificationsH() {
                     </div>
                   </div>
                   <ul>
-                    <li>
+                    {/* <li>
                       <a href="#">
                         <div className="drop_avatar">
                           <img
@@ -94,26 +116,41 @@ export function NotificationsH() {
                           <time> 2 hours ago </time>
                         </div>
                       </a>
-                    </li>
-                    <li className="not-read">
-                      <a href="#">
-                        <div className="drop_avatar status-online">
-                          {" "}
-                          <img
-                            src="assets/images/avatars/avatar-2.jpg"
-                            alt=""
-                          />
-                        </div>
-                        <div className="drop_text">
-                          <p>
-                            <strong>Stella Johnson</strong> Replay Your Comments
-                            in
-                            <span className="text-link">Adobe XD Tutorial</span>
-                          </p>
-                          <time> 9 hours ago </time>
-                        </div>
-                      </a>
-                    </li>
+                    </li> */}
+                    {notifications?.map((item, index) => (
+                      <li className="not-read mb-2" key={index}>
+                        <a>
+                          <div className=" ">
+                            {" "}
+                            <Link
+                              href={`/dashboard/profile/${item.user._id}`}
+                              className="cursor-pointer"
+                            >
+                              <img
+                                src={
+                                  item.user?.profilePicture ||
+                                  "assets/images/avatars/avatar-2.jpg"
+                                }
+                                alt=""
+                                className="cursor-pointer notification-image"
+                              />
+                            </Link>
+                          </div>
+                          <div className="drop_text ">
+                            <div
+                              className="notification-content"
+                              dangerouslySetInnerHTML={{
+                                __html: ClearText(item?.content),
+                              }}
+                            ></div>
+                            <time className="mt-1">
+                              {" "}
+                              {FormatTimes(item.createdAt)}{" "}
+                            </time>
+                          </div>
+                        </a>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -195,10 +232,13 @@ export function Account() {
   }
 
   return (
-    <div>
+    <div className="">
       {" "}
       <a href="#">
-        <img src={me?.profilePicture} className="is_avatar" />
+        <img
+          src={me?.profilePicture || `/imgs/profile.png`}
+          className="is_avatar avatar_profile"
+        />
       </a>
       <div
         uk-drop="mode: click;offset:5"

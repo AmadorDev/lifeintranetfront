@@ -81,7 +81,7 @@ export default function index() {
   return (
     <>
       <div className="lg:w-72 w-full mt-3 mt-md-0">
-        <div className=" justify-center my-account hidden md:flex">
+        <div className=" justify-center my-account items-center hidden md:flex">
           <Account /> <div className="mx-2">Mi cuenta</div>
         </div>
         <AttendanceC></AttendanceC>

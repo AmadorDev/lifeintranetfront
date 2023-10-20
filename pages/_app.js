@@ -119,6 +119,7 @@ function MyApp({ Component, pageProps }) {
             pauseOnFocusLoss
             draggable
             pauseOnHover
+            theme="light"
           />
           <Toaster position="bottom-right" reverseOrder={false} />
         </ChatContext.Provider>

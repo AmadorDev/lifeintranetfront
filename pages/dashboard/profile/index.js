@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import Container from "../../../components/base";
-import PerfilAbout from "../../../components/dashbord/Perfil/PerfilAbout";
-import Friend from "../../../components/dashbord/Perfil/Friend";
+import PerfilAbout from "../../../components/dashboard/Perfil/PerfilAbout";
+import Friend from "../../../components/dashboard/Perfil/Friend";
 
 import useAuth from "../../../hooks/useAuth";
 import { useAppContext } from "../../../providers/AppProvider";
@@ -15,13 +15,13 @@ import ListTipoDocs from "../../../components/regulation/ListTipoDocs";
 import ModalTw from "../../../components/utils/ModalTw";
 
 //menu
-import Suggestions from "../../../components/dashbord/Perfil/Suggestions";
-import Marks from "../../../components/dashbord/Perfil/Marks";
-import Directory from "../../../components/dashbord/Perfil/Directory";
-import Solicitudes from "../../../components/dashbord/Perfil/Solicitudes";
-import AddContactEmergency from "../../../components/dashbord/Perfil/AddContactEmergency";
-import Certificate from "../../../components/dashbord/Perfil/Certificate";
-import Poll from "../../../components/dashbord/Perfil/Poll";
+import Suggestions from "../../../components/dashboard/Perfil/Suggestions";
+import Marks from "../../../components/dashboard/Perfil/Marks";
+import Directory from "../../../components/dashboard/Perfil/Directory";
+import Solicitudes from "../../../components/dashboard/Perfil/Solicitudes";
+import AddContactEmergency from "../../../components/dashboard/Perfil/AddContactEmergency";
+import Certificate from "../../../components/dashboard/Perfil/Certificate";
+import Poll from "../../../components/dashboard/Perfil/Poll";
 
 function index() {
   const router = useRouter();

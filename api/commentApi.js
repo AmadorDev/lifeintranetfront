@@ -8,10 +8,22 @@ export async function commentAddApi(idPost, data, logout) {
       method: "POST",
     };
     params.body = data;
-  
-    const result = await authFetch(url, params, logout);
- 
 
+    const result = await authFetch(url, params, logout);
+
+    return result ? result : null;
+  } catch (error) {}
+}
+
+export async function commentAnswerApi(id, data, logout) {
+  try {
+    const url = `${BASE_PATH}/comments/answer/` + id;
+    const params = {
+      method: "POST",
+    };
+    params.body = data;
+
+    const result = await authFetch(url, params, logout);
     return result ? result : null;
   } catch (error) {}
 }
@@ -51,9 +63,23 @@ export async function commentCountApi(idPost, logout) {
     return result ? result : null;
   } catch (error) {}
 }
-export async function commentLikeApi(idComment, logout) {
+export async function commentLikeApi(idComment,key, logout) {
   try {
-    const url = `${BASE_PATH}/comments/${idComment}/like`;
+    const url = `${BASE_PATH}/comments/${idComment}/like/${key}`;
+    
+    const params = {
+      method: "GET",
+    };
+   
+    const result = await authFetch(url, params, logout);
+    return result ? result : null;
+  } catch (error) {}
+}
+
+
+export async function notificationsApi(logout) {
+  try {
+    const url = `${BASE_PATH}/comments/notifications/all`;
     const params = {
       method: "GET",
     };

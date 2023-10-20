@@ -296,3 +296,22 @@ export async function apiCertificateByUser(logout, userId) {
     return result ? result : null;
   } catch (error) {}
 }
+
+
+
+export async function apiGetUserIdByName(logout,formdata) {
+  try {
+    const params = {
+      method: "POST",
+    };
+    params.body = formdata;
+    const url = `${BASE_PATH}/users/search-name`;
+    console.log('formdata',formdata)
+    const result = await authFetch(url, params, logout);
+    console.log("--------------", result)
+    return result ? result : null;
+  } catch (error) {
+    console.log("--------------", error)
+    return null;
+  }
+}

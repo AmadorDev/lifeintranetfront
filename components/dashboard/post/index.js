@@ -350,7 +350,7 @@ export default function Posts({
     router.push(`/dashboard/profile/${id}`);
   }
 
-
+  console.log(me)
   return (
     <>
       <div className="lg:w-3/4 lg:px-5 space-y-5">

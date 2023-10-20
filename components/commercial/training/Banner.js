@@ -49,6 +49,7 @@ export default function Banner() {
       const formData = new FormData();
       formData.append("cover", image);
       formData.append("section", "trainings");
+      formData.append("category", "slider");
       const resp = await sliderApi(formData, logout);
       if (resp.status) {
         toast.success(resp.message);
@@ -101,7 +102,7 @@ export default function Banner() {
 
   const getBanner = async () => {
     try {
-      const resp = await getBannerApi("trainings", logout);
+      const resp = await getBannerApi("trainings","slider", logout);
       if (resp.status) {
         setBanner(resp.data);
       }

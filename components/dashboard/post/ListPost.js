@@ -14,8 +14,17 @@ import Comment from "./Comment";
 import useAuth from "../../../hooks/useAuth";
 import NewComment from "./NewComment";
 
-import { commentListApi, commentCountApi } from "../../../api/commentApi";
+import {
+  commentListApi,
+  commentCountApi,
+  commentRemoveApi,
+  commentAnswerApi,
+} from "../../../api/commentApi";
 import nl2br from "react-nl2br";
+import toast from "react-hot-toast";
+import { toast as toastF } from "react-toastify";
+import { toastConfig } from "../../../utils/constants";
+import { apiGetUserIdByName } from "../../../api/userApi";
 
 export default function ListPost({
   posts,
@@ -29,27 +38,27 @@ export default function ListPost({
 }) {
   const { auth, logout, me } = useAuth();
   // comments
-  const [datacomments, setdatacomments] = useState([]);
+  const [dataComments, setDataComments] = useState([]);
   const [nextPage, setnextPage] = useState(1);
   const [countTotal, setcountTotal] = useState(0);
+  const [refreshComment, setRefreshComment] = useState(false);
 
-  const FecthComment = async (page) => {
+  const FetchComment = async (page) => {
     const reps = await commentListApi(page, posts._id, logout);
-
+    console.log("calllll", reps.data);
     if (reps.msg === "OK") {
-      const datas = datacomments.concat(reps.data);
-      const newcomments = Array.from(new Set(datas.map(JSON.stringify))).map(
+      const dataS = dataComments.concat(reps.data);
+      const newComment = Array.from(new Set(dataS.map(JSON.stringify))).map(
         JSON.parse
       );
-
-      setdatacomments(newcomments);
+      setDataComments(newComment);
     }
   };
 
   useEffect(async () => {
     let mounted = false;
     if (!mounted) {
-      FecthComment(nextPage);
+      FetchComment(nextPage);
     }
     return () => {
       mounted = true;
@@ -79,8 +88,8 @@ export default function ListPost({
     setnextPage(nextPage + 1);
   }
 
-  function convert(text,id) {
-    let d = document.querySelector("#psDes"+id);
+  function convert(text, id) {
+    let d = document.querySelector("#psDes" + id);
 
     let exp =
       /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
@@ -97,24 +106,133 @@ export default function ListPost({
     );
 
     //respeta los espacios y saltos de linea
-    let textFinal = result.replace(/(?:\r\n|\r|\n)/g, '<br>');
+    let textFinal = result.replace(/(?:\r\n|\r|\n)/g, "<br>");
 
     d.innerHTML = textFinal;
   }
 
   useEffect(() => {
-    convert(posts.description ,posts._id);
+    convert(posts.description, posts._id);
   }, [posts]);
+
+  //comment actions----------------
+  //delete comment
+  async function deleteComment(commentId) {
+    try {
+      const resp = await commentRemoveApi(commentId, logout);
+      console.log("result", resp);
+      if (resp?.msg === "OK") {
+        setDataComments((old) => {
+          return old.filter((items) => items._id !== commentId);
+        });
+        toast.success("Eliminado correctamente!");
+        setcountTotal((old) => parseInt(old) - 1);
+      } else {
+        toast.error(resp.data);
+      }
+    } catch (e) {
+      toast.error(e);
+    }
+  }
+  console.log("comments:", dataComments);
+
+  function handleAddReply(prevComments, id, answerId, text) {
+    return prevComments.map((comment) => {
+      if (comment._id === answerId) {
+        return {
+          ...comment,
+          replies: [...comment.replies, text],
+        };
+      }
+
+      if (comment.replies && comment.replies.length > 0) {
+        return {
+          ...comment,
+          replies: handleAddReply(comment.replies, id, answerId, text),
+        };
+      }
+
+      return comment;
+    });
+  }
+
+  function FilterAnswer(text) {
+    const regex = /@(\w+\s\w+)\./;
+    const match = text.match(regex);
+
+    if (match && match.length > 1) {
+      const fullName = match[1];
+      return fullName;
+    } else {
+      return null;
+    }
+  }
+
+  function FilterAnswerReplace(text, name, id) {
+    const regex = new RegExp(`@${name}\\.`, "g");
+    const result = text.replace(
+      regex,
+      `<a href="/dashboard/profile/${id}">@${name}</a>`
+    );
+
+    return result;
+  }
+
+  console.log("dataComments", dataComments);
+  const handleReplySubmit = async ({ id, answerId, answer,post }) => {
+    console.log("id:", id);
+    console.log("answer:", answerId);
+    console.log("text", answer);
+    console.log("post", post);
+
+
+    
+    let name = FilterAnswer(answer);
+    let newAnswer = answer;
+    let mentioned = null;
+    if (name) {
+      let fd = { name };
+      let getId = await apiGetUserIdByName(logout, JSON.stringify(fd));
+      if (getId.data) {
+        newAnswer = FilterAnswerReplace(answer, name, getId.data);
+        mentioned = getId.data;
+      }
+    }
+
+    let data = {
+      replyId: answerId,
+      answer: newAnswer,
+      post:post,
+      mentioned: mentioned
+    };
+
+    try {
+      const resp = await commentAnswerApi(id, JSON.stringify(data), logout);
+      if (resp.status) {
+        const updatedItems = dataComments.map((item) => {
+          if (item._id === resp?.data._id) {
+            return resp.data;
+          }
+          return item;
+        });
+
+        setDataComments(updatedItems);
+        toastF.success(resp.message);
+      } else {
+        toastF.error(resp.message, toastConfig);
+      }
+    } catch (error) {}
+  };
 
   return (
     <div className="card lg:mx-0 uk-animation-slide-bottom-small mt-4">
       {/* post header*/}
       <div className="flex justify-between items-center lg:p-4 p-2.5">
         <div className="flex flex-1 items-center space-x-4">
-          <Link href={`/dashboard/profile/${posts.user._id}`}>
+          <Link href={`/dashboard/profile/${posts?.user?._id}`}>
             <a>
               <img
-                src={posts.user.profilePicture}
+                src={posts?.user?.profilePicture}
                 className="bg-gray-200 border border-white rounded-full w-10 h-10"
               />
             </a>
@@ -122,7 +240,7 @@ export default function ListPost({
 
           <div className="flex-1 font-semibold capitalize">
             <a className="text-black dark:text-gray-100 font-bold text-lg">
-              {posts.user.name}
+              {posts?.user?.name} 
             </a>
             <div className="text-gray-500 flex items-center space-x-2 font-normal text-sm">
               {FormatTimes(posts.createdAt)}
@@ -162,7 +280,10 @@ export default function ListPost({
           ) : null}
         </div>
       </div>
-      <div className="p-3 border-b dark:border-gray-700" id={`psDes${posts._id}`}></div>
+      <div
+        className="p-3 border-b dark:border-gray-700"
+        id={`psDes${posts._id}`}
+      ></div>
       <div uk-lightbox="true">
         {posts.tipo === "image" ? (
           <Carrusel idpost={posts._id} files={posts.files}></Carrusel>
@@ -193,30 +314,44 @@ export default function ListPost({
         ></LikeHeader>
 
         {/* commentslist */}
-        {datacomments.length > 0 ? (
+        {dataComments.length > 0 ? (
           <div className="border-t py-2 space-y-2 dark:border-gray-600"> </div>
         ) : null}
-        {datacomments?.map((data) => (
+        {/* {datacomments?.map((data) => (
           <Comment
             data={data}
             key={data._id}
             auth={auth}
             logout={logout}
             datacomments={datacomments}
-            setdatacomments={setdatacomments}
+            setDataComments={setDataComments}
             setcountTotal={setcountTotal}
             idpost={posts._id}
+            handleReplySubmit={handleReplySubmit}
           ></Comment>
-        ))}
-        {countTotal > datacomments.length ? (
+        ))} */}
+
+        {dataComments &&
+          dataComments.length > 0 &&
+          dataComments.map((comment, index) => (
+            <Comment
+              key={index}
+              comment={{ ...comment, commentId: comment._id }}
+              post={posts._id}
+              deleteComment={deleteComment}
+              handleReplySubmit={handleReplySubmit}
+            ></Comment>
+          ))}
+
+        {countTotal > dataComments.length ? (
           <div>
             <a
               className="hover:text-back-900 text-gray-600 hover:underline mt-4 poiter"
               onClick={moreComments}
             >
               <span>
-                ver ({`${parseInt(countTotal - datacomments.length)}`})
-                comentarios más
+                ver ({`${parseInt(countTotal - dataComments.length)}`})
+                comentarios más 
               </span>
             </a>
           </div>
@@ -224,10 +359,9 @@ export default function ListPost({
 
         {/* add comments */}
         <NewComment
-          idpost={posts._id}
+          postId={posts._id}
           logout={logout}
-          datacomments={datacomments}
-          setdatacomments={setdatacomments}
+          setDataComments={setDataComments}
         ></NewComment>
       </div>
     </div>

@@ -16,7 +16,7 @@ export async function authFetch(url, params, logout) {
           "Content-Type": "application/json",
         },
       };
-
+console.log('paramsTemp',paramsTemp)
       try {
         const response = await fetch(url, paramsTemp);
         const result = await response.json();

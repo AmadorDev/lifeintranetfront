@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import Container from "../../../components/base";
-import PerfilAbout from "../../../components/dashbord/Perfil/PerfilAbout";
-import Friend from "../../../components/dashbord/Perfil/Friend";
+import PerfilAbout from "../../../components/dashboard/Perfil/PerfilAbout";
+import Friend from "../../../components/dashboard/Perfil/Friend";
 import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
 import {
@@ -16,8 +16,8 @@ import {
 import { useAppContext } from "../../../providers/AppProvider";
 
 import PageError from "../../../components/errors/PageError";
-import ContactEmergency from "../../../components/dashbord/Perfil/ContactEmergency";
-import CertificateByUser from "../../../components/dashbord/Perfil/CertificateByUser";
+import ContactEmergency from "../../../components/dashboard/Perfil/ContactEmergency";
+import CertificateByUser from "../../../components/dashboard/Perfil/CertificateByUser";
 
 function detalle({ id }) {
   const router = useRouter();
