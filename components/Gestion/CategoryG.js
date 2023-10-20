@@ -8,7 +8,7 @@ import {
   categorieEditApi,
 } from "../../api/categorieApi";
 
-import CardForm from "../dashbord/admin/CardForm";
+import CardForm from "../dashboard/admin/CardForm";
 
 export default function CategoryG({ logout }) {
   const [dataCates, setdataCates] = useState([]);

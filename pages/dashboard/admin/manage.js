@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 // components
 import Container from "../../../components/base";
-import CardForm from "../../../components/dashbord/admin/CardForm";
+import CardForm from "../../../components/dashboard/admin/CardForm";
 import useAuth from "../../../hooks/useAuth";
 
 import AreasList from "../../../components/Gestion/AreasList";

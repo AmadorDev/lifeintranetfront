@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Container from "../../../components/base";
-import ListContacts from "../../../components/dashbord/ListContacts";
+import ListContacts from "../../../components/dashboard/ListContacts";
 import useAuth from "../../../hooks/useAuth";
 import { BASE_PATH } from "../../../utils/constants";
 // api

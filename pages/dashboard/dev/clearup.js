@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Container from "../../../components/base";
 import { Picker } from "emoji-mart";
 import useAuth from "../../../hooks/useAuth";
-import Posts from "../../../components/dashbord/post";
+import Posts from "../../../components/dashboard/post";
 import LoaderSimple from "../../../components/utils/LoaderSimple";
 export default function clearup() {
   const [refresPost, setrefresPost] = useState(true);

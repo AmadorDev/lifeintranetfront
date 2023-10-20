@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState, useRef } from "react";
 
 import useAuth from "../../../hooks/useAuth";
 import Container from "../../../components/base";
-import Posts from "../../../components/dashbord/post";
+import Posts from "../../../components/dashboard/post";
 import LoaderSimple from "../../../components/utils/LoaderSimple";
-import LateralTres from "../../../components/dashbord/LateralTres";
+import LateralTres from "../../../components/dashboard/LateralTres";
 
 export default function detalle({ id }) {
   const { auth, me, logout } = useAuth();

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import ListContacts from "../dashbord/ListContacts";
+import ListContacts from "../dashboard/ListContacts";
 export default function ChatRigth({ contacts, auth }) {
   return (
     <>
